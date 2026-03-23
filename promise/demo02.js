@@ -1,6 +1,7 @@
 /**
  * promise 封装异步请求
  */
+/**
 const ajax = function({methods = 'GET', url = ''}) {
   const promise = new Promise(function(resolve, reject){
     const client = new XMLHttpRequest();
@@ -20,7 +21,22 @@ const ajax = function({methods = 'GET', url = ''}) {
     client.send();
   })
   return promise
+}*/
+
+
+const ajax = function({methods = 'GET', url = ''}) {
+  const http = require('http');
+  console.log(url)
+  const promise = new Promise(function(resolve, reject){
+    const req = http.request(url, (res) => {
+      res.on('data', (chunk) => resolve(chunk));
+      res.on('error', (error) => reject(error))
+    })
+    req.end()
+  })
+  return promise
 }
+
 
 ajax({
   methods: 'GET',
